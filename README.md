@@ -8,11 +8,11 @@ The following repo contains all the code and resources utilized in the 2020 IOT 
 
 The project model a distributed system where a number of einvoirmental stations connected to five different sensors:
 
-temperature (-50 ... 50 Celsius)
-humidity (0 ... 100%)
-wind direction (0 ... 360 degrees)
-wind intensity (0 ... 100 m/s)
-rain height (0 ... 50 mm / h)
+temperature (-50 ... 50 Celsius),
+humidity (0 ... 100%),
+wind direction (0 ... 360 degrees),
+wind intensity (0 ... 100 m/s),
+rain height (0 ... 50 mm / h),
 
 Send data to a central hub.
 
