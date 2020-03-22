@@ -29,4 +29,4 @@ IOT2020 Mini utilizes the following tech:
 
 * [Analysis] Contains all the documents for the analysis/ designing of the system.
 * [Application Logic] Contains all the piece of code / tests for the application logic
-* [Presentation] Contain all the piece of code / tests for the presentation to the user
+* [Presentation] Contains all the piece of code / tests for the presentation to the user
