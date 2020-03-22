@@ -14,7 +14,7 @@ wind direction (0 ... 360 degrees),
 wind intensity (0 ... 100 m/s),
 rain height (0 ... 50 mm / h),
 
-Send data to a central hub.
+sending data to a central hub.
 
 ### Tech
 IOT2020 Mini utilizes the following tech:
