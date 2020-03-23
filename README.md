@@ -30,3 +30,10 @@ IOT2020 Mini utilizes the following tech:
 * [Analysis] Contains all the documents for the analysis/ designing of the system.
 * [Application Logic] Contains all the piece of code / tests for the application logic
 * [Presentation] Contains all the piece of code / tests for the presentation to the user
+
+### Important Links:
+
+see a demostration on youtube: TODO
+check the post on linkedin with the full tutorial: TODO
+
+PLEASE NOTE: due to github limitation i cannot upload the full working code with all the modules and frameworks, if you want a full functional copy please email me at: serra.1904089@studenti.uniroma1.it
