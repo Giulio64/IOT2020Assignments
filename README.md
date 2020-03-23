@@ -17,7 +17,7 @@ rain height (0 ... 50 mm / h),
 sending data to a central hub.
 
 ### Tech
-IOT2020 Mini utilizes the following tech:
+
 | Name |Description | Link |
 | ------ | ------ |------|
 | Node.js | javascript variation, used to buid the application logic.|[https://en.wikipedia.org/wiki/Node.js] |
