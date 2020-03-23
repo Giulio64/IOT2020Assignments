@@ -23,7 +23,7 @@ IOT2020 Mini utilizes the following tech:
 | Node.js | javascript variation, used to buid the application logic.|[https://en.wikipedia.org/wiki/Node.js] |
 | Firebase.com |all-in-one solution that provides both storage and code execution capabilities| [https://firebase.google.com] 
 | Azure IOT Hub| Azure Hub to collect/analyze data from IOT Devices |[https://azure.microsoft.com/it-it/services/iot-hub/] |
-
+| React Web| Framework developed by facebook to build web app using Javascript |[https://it.reactjs.org] |
 
 ### Repo Structure
 
