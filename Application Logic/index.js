@@ -198,7 +198,7 @@ exports.getLogs = functions.region(REGION).https.onRequest((req, res) => {
  */
 exports.cronStarter = functions
   .region(REGION)
-  .pubsub.schedule("5 * * * *")
+  .pubsub.schedule("*/10 * * * *")
   .onRun(context => {
     return simulateDataTrasmission()
       .then(() => {
