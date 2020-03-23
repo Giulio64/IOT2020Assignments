@@ -75,13 +75,14 @@ class LogsTable extends Component {
    */
   createRows(){
 
+    console.log({tableopt:this.props.value})
     var rowsList = [];
     for(const option in this.props.value){
       var logsForOption = this.props.value[option];
 
       if(option === this.state.optionToDisplay){
-        for(const logKey in logsForOption){
-          const log = logsForOption[logKey];
+        for(const index in logsForOption){
+          const log = logsForOption[index];
           rowsList.push(this.createRow(log));
         }
       }

@@ -5,6 +5,7 @@ const hub = require("./AnalyticHub/AnalyticHub");
 const storage = require("./PersistanceStorage/PersistanceStorage");
 const REGION = "europe-west1"; // region of the server where all the functions will be deployed
 const uuidv1 = require("uuid/v1");
+const cors = require("cors")({ origin: true });
 
 const snr = require("./Model/Sensor");
 
@@ -37,7 +38,7 @@ exports.postData = functions // create data
       name: "Tango",
       latitude: 9.582515,
       longitude: 45.202579
-
+      //Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table
     };
 
     const WheatherStationCharlie = {
@@ -50,8 +51,8 @@ exports.postData = functions // create data
     const tangoID = uuidv1();
 
     const stations = {
-      [charlieID]: WeatherStationTango,
-      [tangoID]: WheatherStationCharlie
+      [tangoID]: WeatherStationTango,
+      [charlieID]: WheatherStationCharlie
     };
 
     const sensors = {
@@ -60,70 +61,70 @@ exports.postData = functions // create data
         type: "temperature",
         stationID: charlieID,
         connectionString:
-          "{Omitted for security reason}" //Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table
+          "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
       },
       [uuidv1()]: {
         name: "humidityCharlie",
         type: "humidity",
         stationID: charlieID,
         connectionString:
-        "{Omitted for security reason}"
+        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
       },
       [uuidv1()]: {
         name: "windDirectionCharlie",
         stationID: charlieID,
         type: "windDirection",
         connectionString:
-        "{Omitted for security reason}"
+          "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
       },
       [uuidv1()]: {
         name: "windIntensityCharlie",
         stationID: charlieID,
-        typeID: "windIntensity",
+        type: "windIntensity",
         connectionString:
-        "{Omitted for security reason}"
+        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
       },
       [uuidv1()]: {
         name: "rainHeightCharlie",
         stationID: charlieID,
         type: "rain",
         connectionString:
-        "{Omitted for security reason}"
+        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
       },
       [uuidv1()]: {
         name: "temperatureTango",
         type: "temperature",
         stationID: tangoID,
         connectionString:
-        "{Omitted for security reason}"
+        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
       },
       [uuidv1()]: {
         name: "humidityTango",
         type: "humidity",
         stationID: tangoID,
         connectionString:
-        "{Omitted for security reason}"
+        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
       },
       [uuidv1()]: {
         name: "windDirectionTango",
         stationID: tangoID,
         type: "windDirection",
         connectionString:
-        "{Omitted for security reason}"
+        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
       },
       [uuidv1()]: {
         name: "windIntensityTango",
         stationID: tangoID,
         type: "windIntensity",
         connectionString:
-        "{Omitted for security reason}"
+        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
       },
       [uuidv1()]: {
         name: "rainHeightTango",
         stationID: tangoID,
         type: "rain",
         connectionString:
-        "{Omitted for security reason}"
+        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
       }
     };
 
@@ -177,7 +178,9 @@ exports.postSensorsTrasmission = functions
  * @author Giulio Serra <serra.1904089@studenti.uniroma1.it>
  */
 exports.getLogs = functions.region(REGION).https.onRequest((req, res) => {
-  return storage
+  cors(req, res, () => {
+
+    return storage
     .getWeatherStations()
     .then(stations => {
       return res.status(200).send(formatResponse(stations, "ok", "200"));
@@ -185,6 +188,8 @@ exports.getLogs = functions.region(REGION).https.onRequest((req, res) => {
     .catch(error => {
       return res.status(500).send(formatResponse(null, error.message, "500"));
     });
+    
+  })
 });
 
 /**
@@ -193,7 +198,7 @@ exports.getLogs = functions.region(REGION).https.onRequest((req, res) => {
  */
 exports.cronStarter = functions
   .region(REGION)
-  .pubsub.schedule("30 * * * *")
+  .pubsub.schedule("5 * * * *")
   .onRun(context => {
     return simulateDataTrasmission()
       .then(() => {

@@ -34,7 +34,7 @@ class wrapperLogData {
       const station = data[IDStation];
 
       if (response[station.name] === undefined) {
-        response = Object.assign(response, { [station.name]: {} });
+        response = Object.assign(response, { [station.name]: [] });
       }
 
       for (const SensorID in station.sensors) {
@@ -44,7 +44,7 @@ class wrapperLogData {
           const log = sensor.logs[LogID];
 
           var formattedLog = {}; // here we create a formattedLog with all the informations from the backend
-    
+
           formattedLog.date = moment
             .unix(log.timestamp)
             .format("MM/DD/YYYY HH:MM a");
@@ -52,14 +52,16 @@ class wrapperLogData {
           formattedLog.sensorType = log.sensorType;
           formattedLog.value = this.formatValue(log.value, log.sensorType);
           formattedLog.station = station.name;
+          formattedLog.timestamp = log.timestamp;
 
-        
-        const logTime = moment.unix(log.timestamp);
-        const check = logTime.diff(moment(),'days'); 
+          const logTime = moment.unix(log.timestamp);
+          const check = logTime.diff(moment(), "days");
 
-        if(check == 0) // check if log was generated today
-            response[station.name] = Object.assign(response[station.name], {[LogID]:formattedLog});
+          if (check == 0)
+            // check if log was generated today
+            response[station.name].push(formattedLog);
         }
+        response[station.name].sort(this.sortByDate)
       }
     }
 
@@ -71,7 +73,6 @@ class wrapperLogData {
    * @author Giulio Serra <serra.1904089@studenti.uniroma1.it>
    */
   getDataOrderedBySensor() {
-
     var response = {};
 
     if (this.isJSONObjectEmpty(this.rawData)) return response;
@@ -87,7 +88,7 @@ class wrapperLogData {
         var sensor = station.sensors[SensorID];
 
         if (sensor.sensorType === undefined) {
-            response = Object.assign(response, { [sensor.type]: {} });
+          response = Object.assign(response, { [sensor.type]: [] });
         }
 
         for (const LogID in sensor.logs) {
@@ -101,18 +102,22 @@ class wrapperLogData {
           formattedLog.sensorType = log.sensorType;
           formattedLog.value = this.formatValue(log.value, log.sensorType);
           formattedLog.station = station.name;
+          formattedLog.timestamp = log.timestamp;
 
           const logTime = moment.unix(log.timestamp);
-          const check = logTime.diff(moment(),'hours'); 
-  
-          if(check == 0){ // check if log was generated in the last hour
-            response[sensor.type] = Object.assign(response[sensor.type], {[LogID]:formattedLog});
+          const check = logTime.diff(moment(), "hours");
+
+          if (check == 0) {
+            // check if log was generated in the last hour
+            response[sensor.type].push(formattedLog);
           }
-          
         }
+        
+        response[sensor.type].sort(this.sortByDate)
       }
     }
 
+    
     return response;
   }
 
@@ -123,18 +128,21 @@ class wrapperLogData {
    */
   formatValue(value, dataType) {
     if (dataType === "temperature") {
-        return value.toString().slice(0,5) + " " + "C"
+      return value.toString().slice(0, 5) + " " + "C";
     } else if (dataType === "humidity") {
-        return value.toString().slice(0,5) + " " + "%"
+      return value.toString().slice(0, 5) + " " + "%";
     } else if (dataType === "windDirection") {
-        return value.toString().slice(0,5) + " " + "degrees"
+      return value.toString().slice(0, 5) + " " + "degrees";
     } else if (dataType === "windIntensity") {
-        return value.toString().slice(0,5) + " " + "m/s"
+      return value.toString().slice(0, 5) + " " + "m/s";
     } else {
-        return value.toString().slice(0,5) + " " + "mm/h"
+      return value.toString().slice(0, 5) + " " + "mm/h";
     }
   }
 
+  sortByDate(a, b) {
+    return b.timestamp -  a.timestamp;
+  }
 
   /**
    * Checks if a json object is empty
