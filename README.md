@@ -33,7 +33,7 @@ sending data to a central hub.
 
 ### Important Links:
 
-see a demostration on youtube: TODO
+see a demostration on youtube: https://www.youtube.com/watch?v=lEg0gJ1nLy0&feature=youtu.be
 check the post on linkedin with the full tutorial: TODO
 
 PLEASE NOTE: due to github limitation i cannot upload the full working code with all the modules and frameworks, if you want a full functional copy please email me at: serra.1904089@studenti.uniroma1.it
