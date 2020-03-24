@@ -6,7 +6,7 @@ The following repo contains all the code and resources utilized in the 2020 IOT 
 
 "In this assignment you will create a cloud-based IoT system that collects information from a set of virtual environmental sensors using the MQTT protocol. You will also create a simple web site to display the data collected from the sensors."
 
-The project model a distributed system where a number of einvoirmental stations connected to five different sensors:
+The project model a distributed system where a number of environmental stations connected to five different sensors:
 
 temperature (-50 ... 50 Celsius),
 humidity (0 ... 100%),
