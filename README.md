@@ -32,8 +32,14 @@ sending data to a central hub.
 * [Presentation] Contains all the piece of code / tests for the presentation to the user
 
 ### Important Links:
+1^Assignment
 
-see a demonstration on youtube: https://www.youtube.com/watch?v=lEg0gJ1nLy0&feature=youtu.be
-check the post on linkedin with the full tutorial: https://www.linkedin.com/posts/giulio-serra-02966b151_iot-tutorial-1-st-assignment-activity-6648957215308951552-OjCH
+* [Demonstration] See a demonstration on youtube: https://www.youtube.com/watch?v=lEg0gJ1nLy0&feature=youtu.be
+* [Tutorial]check the post on linkedin with the full tutorial: https://www.linkedin.com/posts/giulio-serra-02966b151_iot-tutorial-1-st-assignment-activity-6648957215308951552-OjCH <-- Please note that due some problems on the youtube video I re-uploaded it on March 26, the original tutorial is from March 24.
+
+2^Assignment
+
+* [Demonstration] TBD
+* [Tutorial]check TBD
 
 PLEASE NOTE: due to github limitation i cannot upload the full working code with all the modules and frameworks, if you want a full functional copy please email me at: serra.1904089@studenti.uniroma1.it
