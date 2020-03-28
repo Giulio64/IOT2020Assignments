@@ -1,4 +1,4 @@
-# IOT 2020 1^st Assignment
+# IOT 2020 Assignments
 Authors: 
     - Giulio Serra serra.1904089@studenti.uniroma1.it
     
