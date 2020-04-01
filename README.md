@@ -2,10 +2,6 @@
 Authors: 
     - Giulio Serra serra.1904089@studenti.uniroma1.it
     
-The following repo contains all the code and resources utilized in the 2020 IOT 1^st Homework/Assignment:
-
-"In this assignment you will create a cloud-based IoT system that collects information from a set of virtual environmental sensors using the MQTT protocol. You will also create a simple web site to display the data collected from the sensors."
-
 The project model a distributed system where a number of environmental stations connected to five different sensors:
 
 temperature (-50 ... 50 Celsius),
@@ -24,6 +20,7 @@ sending data to a central hub.
 | Firebase.com |all-in-one solution that provides both storage and code execution capabilities| [https://firebase.google.com] 
 | Azure IOT Hub| Azure Hub to collect/analyze data from IOT Devices |[https://azure.microsoft.com/it-it/services/iot-hub/] |
 | React Web| Framework developed by facebook to build web app using Javascript |[https://it.reactjs.org] |
+| RIOT OS| OS for embedded device|[https://riot-os.org] |
 
 ### Repo Structure
 
@@ -34,10 +31,16 @@ sending data to a central hub.
 ### Important Links:
 1^Assignment
 
+The following repo contains all the code and resources utilized in the 2020 IOT 1^st Homework/Assignment:
+
+"In this assignment you will create a cloud-based IoT system that collects information from a set of virtual environmental sensors using the MQTT protocol. You will also create a simple web site to display the data collected from the sensors."
+
 * [Demonstration] See a demonstration on youtube: https://www.youtube.com/watch?v=zjmsmxCqq48&feature=youtu.be
 * [Tutorial]check the post on linkedin with the full tutorial: https://www.youtube.com/watch?v=fjALkbL98r8&feature=youtu.be <-- Please note that due some problems on the youtube video I re-uploaded it on March 26, the original tutorial is from March 24.
 
 2^Assignment
+
+"In this assignment we will built on-top of the cloud-based components developed in the first assignment. Now we will replace the virtual environmental stations developed using Python/Java, or any other language you decided, with new ones built using the RIOT-OS and MQTT-SN protocol. You will use the native emulator of RIOT-OS to run your stations and generate values over MQTT-SN that need to arrive to the cloud via the MQTT. You will also use IOT-LAB to execute your RIOT-OS application on real devices."
 
 * [Demonstration] TBD
 * [Tutorial]check TBD

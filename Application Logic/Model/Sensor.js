@@ -1,5 +1,6 @@
 
 const moment = require("moment");
+const uuidv1 = require("uuid/v1");
 
 /**
  * Class that rappresents a sensor
@@ -7,11 +8,15 @@ const moment = require("moment");
  */
 function Sensor(info) {
 
+  let ID = info.ID;
   let name = info.name;
   let stationID = info.stationID;
   let type = info.type;
   let connectionString = info.connectionString;
 
+  this.setID = function(sensorID){
+    ID = sensorID;
+  }
 
   /**
    * Simulate a value from the sensor depending on the type
@@ -21,7 +26,10 @@ function Sensor(info) {
     var response = {
       timestamp:moment().unix(),
       sensorName:name,
-      sensorType:type
+      sensorType:type,
+      origin:"simulated",
+      sensorID:ID,
+      ID:uuidv1()
     };
 
     if(type === "temperature"){// Method gives a random value between -50 to 50 Celsius

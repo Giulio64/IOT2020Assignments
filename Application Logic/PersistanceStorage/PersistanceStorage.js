@@ -2,6 +2,7 @@
  * [Pure fabrication that rappresents the storage]
  */
 const admin = require("firebase-admin");
+const hub = require("../AnalyticHub/AnalyticHub");
 
 /**
  * [update a record inside backend]
@@ -88,6 +89,7 @@ function getWeatherStations() {
       .ref("WheatherStation")
       .once("value")
       .then(snap => {
+        
         return getSensors().then(sensors => {
           var response = {};
           const stations = snap.val();
@@ -129,6 +131,35 @@ exports.getSensors = function() {
   });
 };
 
+function getLogs(){
+  return new Promise((res, rej) => {
+    return admin
+    .database()
+    .ref("Log")
+    .once("value")
+    .then(snapLogs => {
+
+      const logs = snapLogs.val();
+      var response = {};
+
+      for(const IDLog in logs){
+        const log = logs[IDLog];
+        if(response[log.sensorID] === null || response[log.sensorID] === undefined){
+          response = Object.assign(response,{[log.sensorID]:{}})
+        }
+        
+        response[log.sensorID] = Object.assign(response[log.sensorID],{[IDLog]:log});
+      }
+
+      return res(response);
+        
+    }).catch(error => {
+      return rej(error);
+    });
+  })
+  
+}
+
 /**
  * Local versions of get WeatherSensors
  * @author Giulio Serra <serra.1904089@studenti.uniroma1.it>
@@ -140,14 +171,13 @@ function getSensors() {
       .ref("Sensor")
       .once("value")
       .then(snapSensors => {
-        return admin
-          .database()
-          .ref("Log")
-          .once("value")
-          .then(snapLog => {
-            const sensors = snapSensors.val();
-            const logs = snapLog.val();
 
+        return hub.getLogs().then(logs=>{
+          //return getLogs().then(logs=>{
+
+            console.log({logs:logs})
+         
+            const sensors = snapSensors.val();
             var response = {};
 
             for (const SensorID in sensors) {
@@ -160,7 +190,10 @@ function getSensors() {
             }
 
             return res(response);
-          });
+        }).catch(error => {
+          console.log(error);
+          return res(snapSensors.val());
+        });
       })
       .catch(error => {
         console.log(error);

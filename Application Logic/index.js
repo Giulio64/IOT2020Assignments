@@ -38,7 +38,7 @@ exports.postData = functions // create data
       name: "Tango",
       latitude: 9.582515,
       longitude: 45.202579
-      //Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table
+      //connectionString:"HostName=IOT2020SAP.azure-devices.net;DeviceId=tango;SharedAccessKey=eLsiqXmZw5hZpbsoyf4I8PaSFPLm4w1+8ovrCKu4Rbw=" //Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table
     };
 
     const WheatherStationCharlie = {
@@ -61,70 +61,70 @@ exports.postData = functions // create data
         type: "temperature",
         stationID: charlieID,
         connectionString:
-          "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
+          "HostName=IOTSAP2020.azure-devices.net;DeviceId=temperatureCharlie;SharedAccessKey=eeebyroH2zVX6sVkoloUD23qG/tucAuOXRUEuEBWeNM="
       },
       [uuidv1()]: {
         name: "humidityCharlie",
         type: "humidity",
         stationID: charlieID,
         connectionString:
-        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
+          "HostName=IOTSAP2020.azure-devices.net;DeviceId=humidityCharlie;SharedAccessKey=ImN4L7TnPnypAqeoZ7/u1fOy5N7Ua1QNwD8YCv3voa0="
       },
       [uuidv1()]: {
         name: "windDirectionCharlie",
         stationID: charlieID,
         type: "windDirection",
         connectionString:
-          "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
+          "HostName=IOTSAP2020.azure-devices.net;DeviceId=windDirectionCharlie;SharedAccessKey=n6QJ338al4jvikzb+ZMPFbMq9WCpoqrKGQZn4s6Tf6g="
       },
       [uuidv1()]: {
         name: "windIntensityCharlie",
         stationID: charlieID,
         type: "windIntensity",
         connectionString:
-        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
+          "HostName=IOTSAP2020.azure-devices.net;DeviceId=windIntensityCharlie;SharedAccessKey=+Isam8KSrPaf0W2C/TDwXZbHddMNS+XgdvYwbf40CH4="
       },
       [uuidv1()]: {
         name: "rainHeightCharlie",
         stationID: charlieID,
         type: "rain",
         connectionString:
-        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
+          "HostName=IOTSAP2020.azure-devices.net;DeviceId=rainCharlie;SharedAccessKey=tJGeZrub7Sv9OtiBiGntOkGKChwG/ssLmXHbXoBvpnE="
       },
       [uuidv1()]: {
         name: "temperatureTango",
         type: "temperature",
         stationID: tangoID,
         connectionString:
-        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
+          "HostName=IOTSAP2020.azure-devices.net;DeviceId=temperatureTango;SharedAccessKey=adzu5ZKfDQg74kU5II3BQqR83nJ+ecY4oen+8tiuYoQ="
       },
       [uuidv1()]: {
         name: "humidityTango",
         type: "humidity",
         stationID: tangoID,
         connectionString:
-        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
+          "HostName=IOTSAP2020.azure-devices.net;DeviceId=humidityTango;SharedAccessKey=6KiHdTlVUHcoJUGnngbwmFehhw5O8cupPU8zQzcW09Q="
       },
       [uuidv1()]: {
         name: "windDirectionTango",
         stationID: tangoID,
         type: "windDirection",
         connectionString:
-        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
+          "HostName=IOTSAP2020.azure-devices.net;DeviceId=windDirectionTango;SharedAccessKey=XMJxXXBRuTJF6s/cS92xyv1+oik+t5eWOcuns5cHoJw="
       },
       [uuidv1()]: {
         name: "windIntensityTango",
         stationID: tangoID,
         type: "windIntensity",
         connectionString:
-        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
+          "HostName=IOTSAP2020.azure-devices.net;DeviceId=windIntensityTango;SharedAccessKey=cXMZlxcGmFWSgTauq8+/7d16I7lGTvQEvoqr3i+VBQM="
       },
       [uuidv1()]: {
         name: "rainHeightTango",
         stationID: tangoID,
         type: "rain",
         connectionString:
-        "{/Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table}"
+          "HostName=IOTSAP2020.azure-devices.net;DeviceId=rainTango;SharedAccessKey=5a9pzXkjE2EnDHJUGwMSP+7zTtyIxh4S9f03IGO/PGI="
       }
     };
 
@@ -192,6 +192,21 @@ exports.getLogs = functions.region(REGION).https.onRequest((req, res) => {
   })
 });
 
+
+/*exports.getAzureLogs = functions.region(REGION).https.onRequest((req, res) => {
+  cors(req, res, () => {
+   return hub.getLogs()
+    .then(logs => {
+      return res.status(200).send(formatResponse(logs, "ok", "200"));
+    })
+    .catch(error => {
+      console.log({AzureError:error})
+      return res.status(500).send(formatResponse(null, error.message, "500"));
+    });
+    
+  })
+});*/
+
 /**
  * [Cron simulating a new data trasmission every 30 minutes from all the devices]
  * @author Giulio Serra <serra.1904089@studenti.uniroma1.it>
@@ -200,7 +215,7 @@ exports.cronStarter = functions
   .region(REGION)
   .pubsub.schedule("*/10 * * * *")
   .onRun(context => {
-    return simulateDataTrasmission()
+    /*return simulateDataTrasmission()
       .then(() => {
         console.log(
           "Simulated telemetry data incoming from the sensors, current time: " +
@@ -211,7 +226,12 @@ exports.cronStarter = functions
       .catch(error => {
         console.log("Error sending simultaed telemetry " + moment().format("MMMM Do YYYY, h:mm:ss a"));
         return rej(error);
-      });
+      });*/
+
+      console.log(
+        "Simulated telemetry is disabled, no call executed. current time: " +
+          moment().format("MMMM Do YYYY, h:mm:ss a")
+      );
   });
 
 /**
@@ -230,9 +250,11 @@ function simulateDataTrasmission() {
         };
 
         const sensor = new snr.Sensor(sensors[ID]);
+        sensor.setID(ID);
         const data = sensor.simulateValue();
 
-        trasmissionPromisses.push(hub.sendData(wrapper, data));
+        trasmissionPromisses.push(hub.sendMQTTData(wrapper, data));
+        //trasmissionPromisses.push(storage.updateRecord("Log",{[data.ID]:data})) -> now the logs aren0t store anymore
       }
 
       return Promise.all(trasmissionPromisses)
