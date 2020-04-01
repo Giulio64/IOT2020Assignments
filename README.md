@@ -21,6 +21,8 @@ sending data to a central hub.
 | Azure IOT Hub| Azure Hub to collect/analyze data from IOT Devices |[https://azure.microsoft.com/it-it/services/iot-hub/] |
 | React Web| Framework developed by facebook to build web app using Javascript |[https://it.reactjs.org] |
 | RIOT OS| OS for embedded device|[https://riot-os.org] |
+| MOSQUITTO| broker for MQTT protocol comunication|[https://mosquitto.org] |
+| PAHO| transparent gateway for MQTT protocol comunication|[https://www.eclipse.org/paho/components/mqtt-sn-transparent-gateway/] |
 
 ### Repo Structure
 
