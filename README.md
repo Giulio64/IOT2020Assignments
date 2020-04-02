@@ -45,7 +45,7 @@ The following repo contains all the code and resources utilized in the 2020 IOT 
 "In this assignment we will built on-top of the cloud-based components developed in the first assignment. Now we will replace the virtual environmental stations developed using Python/Java, or any other language you decided, with new ones built using the RIOT-OS and MQTT-SN protocol. You will use the native emulator of RIOT-OS to run your stations and generate values over MQTT-SN that need to arrive to the cloud via the MQTT. You will also use IOT-LAB to execute your RIOT-OS application on real devices."
 
 * [Demonstration] See a demonstration on youtube: https://youtu.be/t0e9Yn5L86A
-* [Tutorial]check TBD
+* [Tutorial]check the post on linkedin for the full tutorial: https://www.linkedin.com/posts/giulio-serra-02966b151_iot-development-activity-6651483238105788418-xlxo
 
 please se inside Application Logic and presentation for the resources of the 2^nd assignment
 
