@@ -47,4 +47,6 @@ The following repo contains all the code and resources utilized in the 2020 IOT 
 * [Demonstration] See a demonstration on youtube: https://youtu.be/t0e9Yn5L86A
 * [Tutorial]check TBD
 
+please se inside Application Logic and presentation for the resources of the 2^nd assignment
+
 PLEASE NOTE: due to github limitation i cannot upload the full working code with all the modules and frameworks, if you want a full functional copy please email me at: serra.1904089@studenti.uniroma1.it
