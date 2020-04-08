@@ -23,6 +23,7 @@ sending data to a central hub.
 | RIOT OS| OS for embedded device|[https://riot-os.org] |
 | MOSQUITTO| broker for MQTT protocol comunication|[https://mosquitto.org] |
 | PAHO| transparent gateway for MQTT protocol comunication|[https://www.eclipse.org/paho/components/mqtt-sn-transparent-gateway/] |
+| The Thing Network|All-in-one solution for LoRA devices and gateways|[https://console.thethingsnetwork.org] |
 
 ### Repo Structure
 
