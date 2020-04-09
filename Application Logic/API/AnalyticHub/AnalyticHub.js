@@ -13,9 +13,9 @@ const KustoClient = require("azure-kusto-data").Client;
 const KustoConnectionStringBuilder = require("azure-kusto-data")
   .KustoConnectionStringBuilder;
 
-const CLUSTERNAME = "<CLUSTERNAME HERE>";
-let username = "<YOUR AZURE EMAIL>";
-let password = "<YOUR AZURE PASSWORD>";
+const CLUSTERNAME = "iottelemetry.francesouth";
+let username = "giulio.serra1995@gmail.com";
+let password = "Leopoldo64";
 
 /**
  * [Create a new log inside the hub and inside the persistance Storage]
@@ -66,7 +66,7 @@ exports.getLogs = function() {
     );
 
     const kustoClient = new KustoClient(kcs);
-    kustoClient.execute("<DATABASE NAME>", "<TABLE NAME>", (err, results) => {
+    kustoClient.execute("telemetrydb", "telemetryTable", (err, results) => {
         if (err)return rej(new Error(err));
         
         var logs = createWrapperFromRawData(results);

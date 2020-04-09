@@ -38,7 +38,6 @@ exports.postData = functions // create data
       name: "Tango",
       latitude: 9.582515,
       longitude: 45.202579
-      //connectionString:"HostName=IOT2020SAP.azure-devices.net;DeviceId=tango;SharedAccessKey=eLsiqXmZw5hZpbsoyf4I8PaSFPLm4w1+8ovrCKu4Rbw=" //Using the Azure CLI: az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table
     };
 
     const WheatherStationCharlie = {
@@ -192,20 +191,53 @@ exports.getLogs = functions.region(REGION).https.onRequest((req, res) => {
   })
 });
 
-
-/*exports.getAzureLogs = functions.region(REGION).https.onRequest((req, res) => {
+/**
+ * [Endpoint for the data coming from The Thing Network]
+ * @author Giulio Serra <serra.1904089@studenti.uniroma1.it>
+ */
+exports.postTTNLog = functions.region(REGION).https.onRequest((req, res) => {
   cors(req, res, () => {
-   return hub.getLogs()
-    .then(logs => {
-      return res.status(200).send(formatResponse(logs, "ok", "200"));
-    })
-    .catch(error => {
-      console.log({AzureError:error})
-      return res.status(500).send(formatResponse(null, error.message, "500"));
-    });
-    
+    console.log({log:"trasmission from TTn",data:req.body}); 
+
+    try{
+
+      if(isEmptyObject(req.body)){
+        console.log({log:"TTn transmission with empty body."});
+        return res.status(200).send(formatResponse({}, "ok", "200"));
+      }
+
+      const rawPayload = req.body.payload_raw; // raw payload in base 64  
+      const buffer = new Buffer(rawPayload, 'base64');
+      const text = buffer.toString('ascii');
+
+      console.log({log:"TTn deconding complete.",data:text});
+
+      var jsonLog = JSON.parse(text);
+      console.log({log:"Json Decoding",decodedJsonObject:jsonLog});
+
+      const log = { // new log to store in the database
+
+          sensorName:jsonLog.sensorName,
+          sensorType:jsonLog.sensorType,
+          origin:jsonLog.origin,
+          sensorID:jsonLog.sensorID,
+          value:jsonLog.value,
+          timestamp:moment().unix()
+      }
+
+      storage.updateRecord("Log",{[uuidv1()]:log}).then(()=>{
+        return res.status(200).send(formatResponse({[uuidv1()]:log}, "ok", "200"));
+      }).catch(error => {
+        return res.status(500).send(formatResponse(error, "error", "500"));
+      });
+      
+
+    }catch (err) {
+      console.log({log:"error decoding data from TTn, dropping...",err:err});
+      return res.status(500).send(formatResponse(err, "error", "500"));
+    }
   })
-});*/
+});
 
 /**
  * [Cron simulating a new data trasmission every 30 minutes from all the devices]
@@ -232,6 +264,7 @@ exports.cronStarter = functions
         "Simulated telemetry is disabled, no call executed. current time: " +
           moment().format("MMMM Do YYYY, h:mm:ss a")
       );
+      return;
   });
 
 /**
@@ -253,8 +286,8 @@ function simulateDataTrasmission() {
         sensor.setID(ID);
         const data = sensor.simulateValue();
 
-        trasmissionPromisses.push(hub.sendMQTTData(wrapper, data));
-        //trasmissionPromisses.push(storage.updateRecord("Log",{[data.ID]:data})) -> now the logs aren0t store anymore
+        //trasmissionPromisses.push(hub.sendMQTTData(wrapper, data));
+        trasmissionPromisses.push(storage.updateRecord("Log",{[data.ID]:data})) //-> now the logs aren0t store anymore
       }
 
       return Promise.all(trasmissionPromisses)
@@ -267,3 +300,17 @@ function simulateDataTrasmission() {
     });
   });
 }
+
+
+/**
+ * Check if a json object is empty
+ * @author Giulio Serra <serra.1904089@studenti.uniroma1.it>
+ */
+function isEmptyObject (obj) {
+  var name;
+  for (name in obj) {
+      return false;
+  }
+  return true;
+}
+

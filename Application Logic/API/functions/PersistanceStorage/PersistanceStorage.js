@@ -2,6 +2,7 @@
  * [Pure fabrication that rappresents the storage]
  */
 const admin = require("firebase-admin");
+const hub = require("../AnalyticHub/AnalyticHub");
 
 /**
  * [update a record inside backend]
@@ -9,13 +10,13 @@ const admin = require("firebase-admin");
  * @param  {String} path [the path of the record to update]
  * @param  {JSON} object [object describing the new record , must be in ID:{...} format]
  */
-exports.updateRecord = function(path, object) {
+exports.updateRecord = function (path, object) {
   return new Promise((res, rej) => {
     return updateRecord(path, object)
-      .then(data => {
+      .then((data) => {
         return res(data);
       })
-      .catch(error => {
+      .catch((error) => {
         return rej(error);
       });
   });
@@ -27,7 +28,7 @@ exports.updateRecord = function(path, object) {
  * @param  {String} path [the path of the record to update]
  * @param  {JSON} object [object describing the new record , must be in ID:{...} format]
  */
-exports.createRecord = function(path, object) {
+exports.createRecord = function (path, object) {
   return new Promise((res, rej) => {
     admin
       .database()
@@ -36,7 +37,7 @@ exports.createRecord = function(path, object) {
       .then(() => {
         return res(true);
       })
-      .catch(error => {
+      .catch((error) => {
         return rej(error);
       });
   });
@@ -55,7 +56,7 @@ function updateRecord(path, object) {
       .then(() => {
         return res(true);
       })
-      .catch(error => {
+      .catch((error) => {
         return rej(error);
       });
   });
@@ -65,13 +66,13 @@ function updateRecord(path, object) {
  * Get all the weather Stations in the database
  * @author Giulio Serra <serra.1904089@studenti.uniroma1.it>
  */
-exports.getWeatherStations = function() {
+exports.getWeatherStations = function () {
   return new Promise((res, rej) => {
     getWeatherStations()
-      .then(stations => {
+      .then((stations) => {
         return res(stations);
       })
-      .catch(error => {
+      .catch((error) => {
         return rej(error);
       });
   });
@@ -87,18 +88,20 @@ function getWeatherStations() {
       .database()
       .ref("WheatherStation")
       .once("value")
-      .then(snap => {
-        return getSensors().then(sensors => {
+      .then((snap) => {
+        return getSensors().then((sensors) => {
           var response = {};
           const stations = snap.val();
 
           for (const IDStation in stations) {
             let station = stations[IDStation];
-            station.sensors = {}
+            station.sensors = {};
 
-            for(const IDSensor in sensors){
-              if(sensors[IDSensor].stationID === IDStation){
-                station.sensors = Object.assign(station.sensors,{[IDSensor]:sensors[IDSensor]})
+            for (const IDSensor in sensors) {
+              if (sensors[IDSensor].stationID === IDStation) {
+                station.sensors = Object.assign(station.sensors, {
+                  [IDSensor]: sensors[IDSensor],
+                });
               }
             }
 
@@ -108,7 +111,7 @@ function getWeatherStations() {
           return res(response);
         });
       })
-      .catch(error => {
+      .catch((error) => {
         return rej(error);
       });
   });
@@ -117,17 +120,62 @@ function getWeatherStations() {
 /**
  * Get all the sensors in the the database
  */
-exports.getSensors = function() {
+exports.getSensors = function () {
   return new Promise((res, rej) => {
     return getSensors()
-      .then(sensors => {
+      .then((sensors) => {
         return res(sensors);
       })
-      .catch(error => {
+      .catch((error) => {
         return rej(error);
       });
   });
 };
+
+function getLogs() {
+  return new Promise((res, rej) => {
+    return admin
+      .database()
+      .ref("Log")
+      .once("value")
+      .then((snapLogs) => {
+
+        let logs = snapLogs.val();
+        var response = {};
+
+        return hub.getLogs().then((Azurelogs) => { // get logs from azure IOT HUB
+          return logs = Object.assign(logs,Azurelogs);
+        }).catch((error) => {
+            console.log({log:"Error obtaining azure logs:",err:error})
+        }).then(() => {
+
+          for (const IDLog in logs) {
+
+            const log = logs[IDLog];
+            if (
+              response[log.sensorID] === null ||
+              response[log.sensorID] === undefined
+            ) {
+              response = Object.assign(response, { [log.sensorID]: {} });
+            }
+  
+            response[log.sensorID] = Object.assign(response[log.sensorID], {
+              [IDLog]: log,
+            });
+          }
+  
+          return res(response);
+
+        }).catch((error) => {
+          return rej(error);
+        });
+       
+      })
+      .catch((error) => {
+        return rej(error);
+      });
+  });
+}
 
 /**
  * Local versions of get WeatherSensors
@@ -139,15 +187,12 @@ function getSensors() {
       .database()
       .ref("Sensor")
       .once("value")
-      .then(snapSensors => {
-        return admin
-          .database()
-          .ref("Log")
-          .once("value")
-          .then(snapLog => {
-            const sensors = snapSensors.val();
-            const logs = snapLog.val();
+      .then((snapSensors) => {
+        return getLogs()
+          .then((logs) => {
+            console.log({ logs: logs });
 
+            const sensors = snapSensors.val();
             var response = {};
 
             for (const SensorID in sensors) {
@@ -160,9 +205,13 @@ function getSensors() {
             }
 
             return res(response);
+          })
+          .catch((error) => {
+            console.log(error);
+            return res(snapSensors.val());
           });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         return rej(error);
       });
