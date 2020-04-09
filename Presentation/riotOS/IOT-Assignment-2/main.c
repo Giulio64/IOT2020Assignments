@@ -15,6 +15,7 @@
  *              emCute
  *
  * @author      Hauke Petersen <hauke.petersen@fu-berlin.de>
+ * @author      Giulio Serra <serra.1904089@studenti.uniroma1.it>
  *
  * @}
  */
@@ -494,25 +495,22 @@ static int buildPayload(int argc,char **argv){
     }
     else{
 
+     
         char payload[250];
-        time_t mytime = time(NULL);
-
-        char stringifyTime[50];
-        sprintf (stringifyTime, "%lu", mytime);
-
+        strcat(payload, "");
+    
         char stringifyValue[50];
-        gcvt(currentSensor.value, 6, stringifyValue);
+        sprintf(stringifyValue , "%.3f", currentSensor.value);
 
-        strcat(payload, "{\"timestamp\":");
-        strcat(payload,stringifyTime);
-        strcat(payload, "\n");
 
+        strcat(payload, "{");
         strcat(payload, "\"sensorName\":");
+        strcat(payload, "\"");
         strcat(payload,currentSensor.sensorName);
         strcat(payload,"\",");
         strcat(payload, "\n");
-
         strcat(payload, "\"sensorType\":");
+        strcat(payload, "\"");
         strcat(payload,currentSensor.sensorType);
         strcat(payload,"\",");
         strcat(payload, "\n");
@@ -520,26 +518,27 @@ static int buildPayload(int argc,char **argv){
         strcat(payload, "\"origin\":\"physical Device\",");
         strcat(payload, "\n");
 
-        strcat(payload, "\"sensorID\":");
+        strcat(payload, "\"sensorID\":\"");
         strcat(payload,currentSensor.ID);
         strcat(payload,"\",");
         strcat(payload, "\n");
 
         strcat(payload, "\"value\":");
         strcat(payload,stringifyValue);
-        strcat(payload,"\",");
+        strcat(payload,",");
         strcat(payload, "\n");
 
-        strcat(payload, "\"ID\":");
+        strcat(payload, "\"ID\":\"");
         strcat(payload,randstring(32));
         strcat(payload,"\"}");
 
-
+        printf("%s\n", "");
         printf("%s\n",payload);
+        printf("%s\n", "");
 
-            // empty the strings once the payload is printed
-        strcpy(payload, ""); 
-        strcpy(stringifyTime, "");
+
+        // empty the strings once the payload is printed
+        strcpy(payload, "");
         strcpy(stringifyValue, "");
   
     }
@@ -581,20 +580,8 @@ static int initSensor(int argc,char **argv){
                     printf("sensor: %s found",argv[2]);
                     printf("%s\n","");
                     currentSensor = stations[i].sensors[j];
-
-                    if(strcmp(currentSensor.sensorType,"temperature") == 0){
-                        currentSensor.value = get_Temperature();
-                    }else if(strcmp(currentSensor.sensorType,"rain") == 0){
-                        currentSensor.value = get_Rain();
-                    }else if(strcmp(currentSensor.sensorType,"humidity") == 0){
-                        currentSensor.value = get_Humidity();
-                    }else if(strcmp(currentSensor.sensorType,"windDirection") == 0){
-                        currentSensor.value = get_WindDirection();
-                    }else{
-                        currentSensor.value = get_WindIntensity();
-                    }
-
                     isSensorSelected = true;
+                    printf("value %f", argv[2]);
                     return 0;
 
 
@@ -630,22 +617,22 @@ static int sendPayload(int argc,char **argv){
     char payload[250];
     time_t mytime = time(NULL);
 
-    char stringifyTime[50];
-    sprintf (stringifyTime, "%lu", mytime);
-
+    
+    char payload[250];
+    strcat(payload, "");
+    
     char stringifyValue[50];
-    gcvt(currentSensor.value, 6, stringifyValue);
+    sprintf(stringifyValue , "%.3f", currentSensor.value);
 
-    strcat(payload, "{\"timestamp\":");
-    strcat(payload,stringifyTime);
-    strcat(payload, "\n");
 
+    strcat(payload, "{");
     strcat(payload, "\"sensorName\":");
+    strcat(payload, "\"");
     strcat(payload,currentSensor.sensorName);
     strcat(payload,"\",");
     strcat(payload, "\n");
-
     strcat(payload, "\"sensorType\":");
+    strcat(payload, "\"");
     strcat(payload,currentSensor.sensorType);
     strcat(payload,"\",");
     strcat(payload, "\n");
@@ -653,23 +640,28 @@ static int sendPayload(int argc,char **argv){
     strcat(payload, "\"origin\":\"physical Device\",");
     strcat(payload, "\n");
 
-    strcat(payload, "\"sensorID\":");
+    strcat(payload, "\"sensorID\":\"");
     strcat(payload,currentSensor.ID);
     strcat(payload,"\",");
     strcat(payload, "\n");
 
     strcat(payload, "\"value\":");
     strcat(payload,stringifyValue);
-    strcat(payload,"\",");
+    strcat(payload,",");
     strcat(payload, "\n");
 
-    strcat(payload, "\"ID\":");
+    strcat(payload, "\"ID\":\"");
     strcat(payload,randstring(32));
     strcat(payload,"\"}");
 
-
+    printf("%s\n", "");
     printf("%s\n",payload);
+    printf("%s\n", "");
 
+
+    // empty the strings once the payload is printed
+    strcpy(payload, "");
+    strcpy(stringifyValue, "");
     // empty the strings once the payload is printed
         
 

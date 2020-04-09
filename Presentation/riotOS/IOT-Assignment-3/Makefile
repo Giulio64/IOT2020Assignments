@@ -17,6 +17,8 @@ USEMODULE += $(LORA_DRIVER)
 USEMODULE += shell
 USEMODULE += shell_commands
 USEMODULE += fmt
+USEMODULE += printf_float
+USEMODULE += xtimer
 
 FEATURES_OPTIONAL += periph_eeprom
 

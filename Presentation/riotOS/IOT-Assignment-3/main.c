@@ -24,6 +24,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <inttypes.h>
+#include "xtimer.h"
 
 #include "msg.h"
 #include "shell.h"
@@ -35,6 +36,7 @@
 semtech_loramac_t loramac;
 
 static bool isSensorSelected = false;
+static int MINUTES_BEFORE_RETRASMISSION = 3;
 
 /**
 *Struct declaration that rappresent all the five sensors mounted on the board(weather station)
@@ -542,9 +544,9 @@ static int _cmd_loramac(int argc, char **argv)
  */
 static float get_Temperature(void){
 
-        int MAX_TEMP = 100;
-        float coeff = ((float)rand()/(float)(RAND_MAX));
-        return MAX_TEMP * coeff;
+    int MAX_TEMP = 100;
+    float coeff = ((float)rand()/(float)(RAND_MAX));
+    return MAX_TEMP * coeff;
 }
 
 /*
@@ -554,9 +556,9 @@ static float get_Temperature(void){
 static float get_Humidity(void){
 
     int MAX_HUMIDITY = 100;
-        float coeff = ((float)rand()/(float)(RAND_MAX));
+    float coeff = ((float)rand()/(float)(RAND_MAX));
 
-        return MAX_HUMIDITY * coeff;
+    return MAX_HUMIDITY * coeff;
    
 }
 
@@ -609,10 +611,10 @@ static void initWeatherStationsInformations(void){
 
     charlie.name = "Charlie";
 
-    sensor tempC = {"2c107530-743b-11ea-9072-737364a53ef5",get_Temperature(),"temperatureCharlie","temperaturature"};
+    sensor tempC = {"2c107530-743b-11ea-9072-737364a53ef5",get_Temperature(),"temperatureCharlie","temperature"};
     sensor humC =  {"2c107531-743b-11ea-9072-737364a53ef5",get_Humidity(),"humidityCharlie","humidity"};
     sensor wDirC = {"2c107532-743b-11ea-9072-737364a53ef5",get_WindDirection(),"windDirectionCharlie","WindDirection"};
-    sensor wIntC = {"2c107533-743b-11ea-9072-737364a53ef5",get_WindDirection(),"windIntensityCharlie","WindIntensity"};
+    sensor wIntC = {"2c107533-743b-11ea-9072-737364a53ef5",get_WindIntensity(),"windIntensityCharlie","WindIntensity"};
     sensor rainC = {"2c107534-743b-11ea-9072-737364a53ef5",get_Rain(),"rainHeightCharlie","rain"};
 
     charlie.sensors[0] = tempC;
@@ -621,13 +623,12 @@ static void initWeatherStationsInformations(void){
     charlie.sensors[3] = wIntC;
     charlie.sensors[4] = rainC;
 
-
     tango.name = "Tango";
 
-    sensor tempT = {"2c107535-743b-11ea-9072-737364a53ef5",get_Temperature(),"temperatureTango","temperaturature"};
+    sensor tempT = {"2c107535-743b-11ea-9072-737364a53ef5",get_Temperature(),"temperatureTango","temperature"};
     sensor humT =  {"2c107536-743b-11ea-9072-737364a53ef5",get_Humidity(),"humidityTango","humidity"};
     sensor wDirT = {"2c107537-743b-11ea-9072-737364a53ef5",get_WindDirection(),"windDirectionTango","WindDirection"};
-    sensor wIntT = {"2c107538-743b-11ea-9072-737364a53ef5",get_WindDirection(),"windIntensityTango","WindIntensity"};
+    sensor wIntT = {"2c107538-743b-11ea-9072-737364a53ef5",get_WindIntensity(),"windIntensityTango","WindIntensity"};
     sensor rainT = {"2c107539-743b-11ea-9072-737364a53ef5",get_Rain(),"rainHeightTango","rain"};
 
     tango.sensors[0] = tempT;
@@ -654,12 +655,11 @@ static void initWeatherStationsInformations(void){
             printf("%s"," ");
             printf("%s",stations[i].sensors[j].sensorType);
             printf("%s"," ");
-            printf("%.6f",stations[i].sensors[j].value);
+            printf("%f",stations[i].sensors[j].value);
             printf("%s\n","");
             printf("%s\n","");
         }
     }
-   
 }
 
 
@@ -704,24 +704,20 @@ static int buildPayload(int argc,char **argv){
     else{
 
         char payload[250];
-        time_t mytime = time(NULL);
-
-        char stringifyTime[50];
-        sprintf (stringifyTime, "%lu", mytime);
-
+        strcat(payload, "");
+    
         char stringifyValue[50];
         sprintf(stringifyValue , "%.3f", currentSensor.value);
 
-        strcat(payload, "{\"timestamp\":");
-        strcat(payload,stringifyTime);
-        strcat(payload, "\n");
 
+        strcat(payload, "{");
         strcat(payload, "\"sensorName\":");
+        strcat(payload, "\"");
         strcat(payload,currentSensor.sensorName);
         strcat(payload,"\",");
         strcat(payload, "\n");
-
         strcat(payload, "\"sensorType\":");
+        strcat(payload, "\"");
         strcat(payload,currentSensor.sensorType);
         strcat(payload,"\",");
         strcat(payload, "\n");
@@ -729,26 +725,27 @@ static int buildPayload(int argc,char **argv){
         strcat(payload, "\"origin\":\"physical Device\",");
         strcat(payload, "\n");
 
-        strcat(payload, "\"sensorID\":");
+        strcat(payload, "\"sensorID\":\"");
         strcat(payload,currentSensor.ID);
         strcat(payload,"\",");
         strcat(payload, "\n");
 
         strcat(payload, "\"value\":");
         strcat(payload,stringifyValue);
-        strcat(payload,"\",");
+        strcat(payload,",");
         strcat(payload, "\n");
 
-        strcat(payload, "\"ID\":");
+        strcat(payload, "\"ID\":\"");
         strcat(payload,randstring(32));
         strcat(payload,"\"}");
 
-
+        printf("%s\n", "");
         printf("%s\n",payload);
+        printf("%s\n", "");
 
-            // empty the strings once the payload is printed
-        strcpy(payload, ""); 
-        strcpy(stringifyTime, "");
+
+        // empty the strings once the payload is printed
+        strcpy(payload, "");
         strcpy(stringifyValue, "");
   
     }
@@ -790,19 +787,6 @@ static int initSensor(int argc,char **argv){
                     printf("sensor: %s found",argv[2]);
                     printf("%s\n","");
                     currentSensor = stations[i].sensors[j];
-
-                    if(strcmp(currentSensor.sensorType,"temperature") == 0){
-                        currentSensor.value = get_Temperature();
-                    }else if(strcmp(currentSensor.sensorType,"rain") == 0){
-                        currentSensor.value = get_Rain();
-                    }else if(strcmp(currentSensor.sensorType,"humidity") == 0){
-                        currentSensor.value = get_Humidity();
-                    }else if(strcmp(currentSensor.sensorType,"windDirection") == 0){
-                        currentSensor.value = get_WindDirection();
-                    }else{
-                        currentSensor.value = get_WindIntensity();
-                    }
-
                     isSensorSelected = true;
                     return 0;
 
@@ -822,7 +806,7 @@ static int initSensor(int argc,char **argv){
 
 
 /**
-* Send the data from the sensor over the lora channel
+* Send the data from the sensor over the LoRA channel
 * Author: Giulio Serra serra.1904089@gmail.com
 */
 static int sendPayload(int argc,char **argv){
@@ -835,26 +819,21 @@ static int sendPayload(int argc,char **argv){
         return 1;
     }
 
+   
     char payload[250];
-    time_t mytime = time(NULL);
-
-    char stringifyTime[50];
-    sprintf (stringifyTime, "%lu", mytime);
-
+    strcat(payload, "");
+    
     char stringifyValue[50];
     sprintf(stringifyValue , "%.3f", currentSensor.value);
 
-
-    strcat(payload, "{\"timestamp\":");
-    strcat(payload,stringifyTime);
-    strcat(payload, "\n");
-
+    strcat(payload, "{");
     strcat(payload, "\"sensorName\":");
+    strcat(payload, "\"");
     strcat(payload,currentSensor.sensorName);
     strcat(payload,"\",");
     strcat(payload, "\n");
-
     strcat(payload, "\"sensorType\":");
+    strcat(payload, "\"");
     strcat(payload,currentSensor.sensorType);
     strcat(payload,"\",");
     strcat(payload, "\n");
@@ -862,22 +841,25 @@ static int sendPayload(int argc,char **argv){
     strcat(payload, "\"origin\":\"physical Device\",");
     strcat(payload, "\n");
 
-    strcat(payload, "\"sensorID\":");
+    strcat(payload, "\"sensorID\":\"");
     strcat(payload,currentSensor.ID);
     strcat(payload,"\",");
     strcat(payload, "\n");
 
     strcat(payload, "\"value\":");
     strcat(payload,stringifyValue);
-    strcat(payload,"\",");
+    strcat(payload,",");
     strcat(payload, "\n");
 
-    strcat(payload, "\"ID\":");
+    strcat(payload, "\"ID\":\"");
     strcat(payload,randstring(32));
     strcat(payload,"\"}");
 
-
+    
+    printf("%s\n", "");
     printf("%s\n",payload);
+    printf("%s\n", "");
+
 
     // now it sends the data over the LORA
 
@@ -892,29 +874,25 @@ static int sendPayload(int argc,char **argv){
                                      (uint8_t *)payload, strlen(payload))) {
         case SEMTECH_LORAMAC_NOT_JOINED:
             puts("Cannot send: not joined");
-            strcpy(payload, ""); 
-            strcpy(stringifyTime, "");
+            strcpy(payload, "");
             strcpy(stringifyValue, "");
             return 1;
 
         case SEMTECH_LORAMAC_DUTYCYCLE_RESTRICTED:
             puts("Cannot send: dutycycle restriction");
             strcpy(payload, ""); 
-            strcpy(stringifyTime, "");
             strcpy(stringifyValue, "");
             return 1;
 
         case SEMTECH_LORAMAC_BUSY:
             puts("Cannot send: MAC is busy");
             strcpy(payload, ""); 
-            strcpy(stringifyTime, "");
             strcpy(stringifyValue, "");
             return 1;
 
         case SEMTECH_LORAMAC_TX_ERROR:
             puts("Cannot send: error");
             strcpy(payload, ""); 
-            strcpy(stringifyTime, "");
             strcpy(stringifyValue, "");
             return 1;
     }
@@ -922,12 +900,37 @@ static int sendPayload(int argc,char **argv){
     // empty the strings once the payload is printed
 
     strcpy(payload, ""); 
-    strcpy(stringifyTime, "");
     strcpy(stringifyValue, "");
 
     return 0;
 }
 
+/**
+* Send the data from the sensor over the LoRA channel 
+* Author: Giulio Serra serra.1904089@gmail.com
+*/
+static int cicleTelemetry(int argc,char **argv){
+
+    if(!isSensorSelected){
+        printf("%s\n","You must first initialize the sensor");
+        return 1;
+    }
+    
+    int seconds_before_retrasmission = 60 * MINUTES_BEFORE_RETRASMISSION;
+
+    printf("%s\n","starting the telemetry...\n");
+
+    while(1){
+        printf("%s\n","sleeping...\n");
+        xtimer_sleep(seconds_before_retrasmission);
+        printf("%s\n","");
+        printf("%s\n","Sending telemetry over LoRA... \n");
+        sendPayload(argc,argv);
+        printf("%s\n","");
+    }
+
+    return 0; // should never been reached
+}
 
 /*------------------------------------------------------------------------------------------------------------------*/
 
@@ -935,15 +938,19 @@ static int sendPayload(int argc,char **argv){
 
 static const shell_command_t shell_commands[] = {
     { "loramac", "control the loramac stack", _cmd_loramac },
-    { "printPay", "show a payload for the current sensor on the board to upload on MQTT", buildPayload },
+    { "printPay", "show a payload for the current sensor on the board.", buildPayload },
     { "initSensor", "init the current board as a sensor of a weather station", initSensor},
-    { "sendPayload","send the data using lora channel",sendPayload},
+    { "sendPayload","send the telemetry using LoRa channel",sendPayload},
+    { "cicleTelemetry","send telemetry on LoRa channel with regular interval",cicleTelemetry},
     { NULL, NULL, NULL }
 };
 
 int main(void)
 {
     semtech_loramac_init(&loramac);
+
+    /*init of pseudo number generator*/
+    srand(time(NULL)); 
 
     puts("All up, running the shell now");
     char line_buf[SHELL_DEFAULT_BUFSIZE];
