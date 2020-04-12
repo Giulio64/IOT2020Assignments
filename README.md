@@ -53,7 +53,7 @@ The following repo contains all the code and resources utilized in the 2020 IOT 
 "In this assignment we will built on-top of the cloud-based and edge-based components developed in the first and second assignments. Now we will replace the MQTT protocol and the short-range wireless medium with LoRaWAN and TheThingsNetwork. In this assignment you need to develop a new RIOT-OS application that will be executed on the B-L072Z-LRWAN1 LoRa kit. You will use TheThingsNetwork to interconnect the sensor devices with the cloud infrastructure via the MQTT protocol."
 
 * [Demonstration] See a demonstration on youtube:https://youtu.be/wyxVPOb4kGQ
-* [Tutorial] TBD
+* [Tutorial]check out the post on linkedin for the full tutorial:https://www.linkedin.com/posts/giulio-serra-02966b151_iot-tutorial-3rd-assignment-activity-6655113462605324288-LUNq
 
 please see inside Application Logic and Presentation for the resources of the 2^nd assignment
 
