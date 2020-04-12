@@ -33,10 +33,15 @@
 #include "net/loramac.h"
 #include "semtech_loramac.h"
 
+#include "hts221.h"
+#include "hts221_params.h"
+
 semtech_loramac_t loramac;
+static hts221_t dev;
 
 static bool isSensorSelected = false;
-static int MINUTES_BEFORE_RETRASMISSION = 3;
+static bool isSensorInitialized = true; /*Detect if temperature and humidity sensors are initialized*/
+static int MINUTES_BEFORE_RETRASMISSION = 1;
 
 /**
 *Struct declaration that rappresent all the five sensors mounted on the board(weather station)
@@ -544,9 +549,25 @@ static int _cmd_loramac(int argc, char **argv)
  */
 static float get_Temperature(void){
 
-    int MAX_TEMP = 100;
-    float coeff = ((float)rand()/(float)(RAND_MAX));
-    return MAX_TEMP * coeff;
+    if(!isSensorInitialized){
+
+        int MAX_TEMP = 100;
+        float coeff = ((float)rand()/(float)(RAND_MAX));
+        return MAX_TEMP * coeff;
+
+    }else{
+
+        int16_t temp = 0;
+
+        if (hts221_read_temperature(&dev, &temp) != HTS221_OK) {
+            puts("failed to read hts221 temperature");
+        }
+
+        printf("original temperature %d \n",temp);
+
+        return (float)(temp/10);
+    }
+  
 }
 
 /*
@@ -555,10 +576,26 @@ static float get_Temperature(void){
  */
 static float get_Humidity(void){
 
-    int MAX_HUMIDITY = 100;
-    float coeff = ((float)rand()/(float)(RAND_MAX));
+    if(!isSensorInitialized){
+        int MAX_HUMIDITY = 100;
+        float coeff = ((float)rand()/(float)(RAND_MAX));
+        return MAX_HUMIDITY * coeff;
+    }
+    else{
 
-    return MAX_HUMIDITY * coeff;
+        uint16_t hum = 0;
+
+        if (hts221_read_humidity(&dev, &hum) != HTS221_OK) {
+            puts("failed to read hts221 humidity");
+        }
+
+
+        printf("original humidity %d \n",hum);
+
+        return (float)(hum/10);
+
+    }
+   
    
 }
 
@@ -951,6 +988,20 @@ int main(void)
 
     /*init of pseudo number generator*/
     srand(time(NULL)); 
+
+    if (hts221_init(&dev, &hts221_params[0]) != HTS221_OK) {
+        puts("Cannot initialize hts221 sensor");
+        isSensorInitialized = false;
+    }
+    if (hts221_power_on(&dev) != HTS221_OK) {
+        puts("Failed to set hts221 power on");
+        isSensorInitialized = false;
+   
+    }
+    if (hts221_set_rate(&dev, dev.p.rate) != HTS221_OK) {
+        puts("Failed to set hts221 continuous mode");
+        isSensorInitialized = false;
+    }
 
     puts("All up, running the shell now");
     char line_buf[SHELL_DEFAULT_BUFSIZE];

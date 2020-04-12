@@ -19,6 +19,7 @@ USEMODULE += shell_commands
 USEMODULE += fmt
 USEMODULE += printf_float
 USEMODULE += xtimer
+USEMODULE += hts221
 
 FEATURES_OPTIONAL += periph_eeprom
 
