@@ -24,6 +24,7 @@ sending data to a central hub.
 | MOSQUITTO| broker for MQTT protocol comunication|[https://mosquitto.org] |
 | PAHO| transparent gateway for MQTT protocol comunication|[https://www.eclipse.org/paho/components/mqtt-sn-transparent-gateway/] |
 | The Thing Network|All-in-one solution for LoRA devices and gateways|[https://console.thethingsnetwork.org] |
+| Generic Sensor API| Javascript API for working with sensors on the web|[https://www.w3.org/TR/generic-sensor/] |
 
 ### Repo Structure
 
@@ -48,6 +49,8 @@ The following repo contains all the code and resources utilized in the 2020 IOT 
 * [Demonstration] See a demonstration on youtube: https://youtu.be/t0e9Yn5L86A
 * [Tutorial]check the post on linkedin for the full tutorial: https://www.linkedin.com/posts/giulio-serra-02966b151_iot-tutorial-2-st-assignment-activity-6651485074720198658-sDRH
 
+please see inside Application Logic and Presentation for the resources of the 2^nd assignment
+
 3^Assignment
 
 "In this assignment we will built on-top of the cloud-based and edge-based components developed in the first and second assignments. Now we will replace the MQTT protocol and the short-range wireless medium with LoRaWAN and TheThingsNetwork. In this assignment you need to develop a new RIOT-OS application that will be executed on the B-L072Z-LRWAN1 LoRa kit. You will use TheThingsNetwork to interconnect the sensor devices with the cloud infrastructure via the MQTT protocol."
@@ -55,6 +58,18 @@ The following repo contains all the code and resources utilized in the 2020 IOT 
 * [Demonstration] See a demonstration on youtube:https://youtu.be/wyxVPOb4kGQ
 * [Tutorial]check out the post on linkedin for the full tutorial:https://www.linkedin.com/posts/giulio-serra-02966b151_iot-tutorial-3rd-assignment-activity-6655113462605324288-LUNq
 
-please see inside Application Logic and Presentation for the resources of the 2^nd assignment
+4^Assignment
+
+"In this assignment we will built a mobile application to provide a crowd-sensing extension to our application. We build on-top of the cloud-based and edge-based components developed in the first and second assignments.
+You need to develop an HTML5 application using the Generic Sensor API that collects data form the accelerator sensor of the mobile phone.
+The values collected need to be transmitted to your Cloud infrastructure.
+Using the data collected at the cloud, you need to develop a simple activity recognition model that detects if the user is standing still, or walking/running/being on a vehicle."
+
+* [Demonstration] See a demonstration on youtube:TBD
+* [Tutorial]check out the post on linkedin for the full tutorial:TBD
+
+please see inside Application Logic and Presentation for the resources of the 4^th assignment
+
+
 
 PLEASE NOTE: due to github limitation i cannot upload the full working code with all the modules and frameworks, if you want a full functional copy please email me at: serra.1904089@studenti.uniroma1.it
