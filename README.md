@@ -68,7 +68,7 @@ Using the data collected at the cloud, you need to develop a simple activity rec
 * [Demonstration] See a demonstration on youtube:TBD
 * [Tutorial]check out the post on linkedin for the full tutorial:TBD
 
-please see inside Application Logic and Presentation for the resources of the 4^th assignment
+please see inside Application Logic and Presentation>webApp for the resources of the 4^th assignment
 
 
 
