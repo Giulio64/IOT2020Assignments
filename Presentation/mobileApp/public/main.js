@@ -160,8 +160,7 @@ function evaluateActivity() {
     x: readings[1].x,
     y: readings[1].y,
     z: readings[1].z,
-    activity: activity,
-    timestamp: new Date().getTime(),
+    activity: activity
   };
   readings = [];
   return postActivityAsync(payload).then((response) => {
@@ -188,7 +187,6 @@ function computeTriAxialMagnitude(accelleration) {
     x: accelleration.x,
     y: accelleration.y,
     z: accelleration.z,
-    timestamp: new Date().getTime(),
     magnitude: Math.sqrt(x_exp + y_exp + z_exp),
   };
 
