@@ -33,7 +33,7 @@ sending data to a central hub.
 * [Presentation] Contains all the piece of code / tests for the presentation to the user
 
 ### Important Links:
-1^Assignment
+# 1^Assignment
 
 The following repo contains all the code and resources utilized in the 2020 IOT 1^st Homework/Assignment:
 
@@ -42,7 +42,7 @@ The following repo contains all the code and resources utilized in the 2020 IOT 
 * [Demonstration] See a demonstration on youtube: https://www.youtube.com/watch?v=zjmsmxCqq48&feature=youtu.be
 * [Tutorial]check the post on linkedin with the full tutorial: https://www.youtube.com/watch?v=fjALkbL98r8&feature=youtu.be <-- Please note that due some problems on the youtube video I re-uploaded it on March 26, the original tutorial is from March 24.
 
-2^Assignment
+# 2^Assignment
 
 "In this assignment we will built on-top of the cloud-based components developed in the first assignment. Now we will replace the virtual environmental stations developed using Python/Java, or any other language you decided, with new ones built using the RIOT-OS and MQTT-SN protocol. You will use the native emulator of RIOT-OS to run your stations and generate values over MQTT-SN that need to arrive to the cloud via the MQTT. You will also use IOT-LAB to execute your RIOT-OS application on real devices."
 
@@ -51,14 +51,14 @@ The following repo contains all the code and resources utilized in the 2020 IOT 
 
 please see inside Application Logic and Presentation for the resources of the 2^nd assignment
 
-3^Assignment
+# 3^Assignment
 
 "In this assignment we will built on-top of the cloud-based and edge-based components developed in the first and second assignments. Now we will replace the MQTT protocol and the short-range wireless medium with LoRaWAN and TheThingsNetwork. In this assignment you need to develop a new RIOT-OS application that will be executed on the B-L072Z-LRWAN1 LoRa kit. You will use TheThingsNetwork to interconnect the sensor devices with the cloud infrastructure via the MQTT protocol."
 
 * [Demonstration] See a demonstration on youtube:https://youtu.be/wyxVPOb4kGQ
 * [Tutorial]check out the post on linkedin for the full tutorial:https://www.linkedin.com/posts/giulio-serra-02966b151_iot-tutorial-3rd-assignment-activity-6655113462605324288-LUNq
 
-4^Assignment
+# 4^Assignment
 
 "In this assignment we will built a mobile application to provide a crowd-sensing extension to our application. We build on-top of the cloud-based and edge-based components developed in the first and second assignments.
 You need to develop an HTML5 application using the Generic Sensor API that collects data form the accelerator sensor of the mobile phone.
