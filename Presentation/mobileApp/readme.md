@@ -8,4 +8,4 @@ The magnitude measures the distance of a vector(in this case on 3-axis), so we c
 
 By computing the difference between two readings and comparing it to a treshold, we can determine, with a fair degree of accuracy, the user's activity.
 
-See the **computeTriAxialMagnitude()** method for further informations.
+See the **computeTriAxialMagnitude()** method (public>main.js) for further informations.
