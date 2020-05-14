@@ -231,6 +231,7 @@ exports.postUserActivityLog = functions
       let record = body;
       record.source = "edge";
       record.readings = null;
+      record.timestamp = moment().unix();
 
       return storage
         .updateRecord("ActivityLog", { [uuidv1()]: record })
