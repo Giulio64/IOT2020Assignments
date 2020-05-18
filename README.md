@@ -66,7 +66,7 @@ The values collected need to be transmitted to your Cloud infrastructure.
 Using the data collected at the cloud, you need to develop a simple activity recognition model that detects if the user is standing still, or walking/running/being on a vehicle."
 
 * [Demonstration] See a demonstration on youtube:https://youtu.be/_zjVmtT0SMU
-* [Tutorial]check out the post on linkedin for the full tutorial:TBD
+* [Tutorial]check out the post on linkedin for the full tutorial:https://www.linkedin.com/posts/giulio-serra-02966b151_tutorial-iot-4th-assignment-activity-6668096411562856450-EinI
 
 please see inside Application Logic and Presentation>webApp for the resources of the 4^th assignment
 
